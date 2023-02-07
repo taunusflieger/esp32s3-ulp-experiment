@@ -1,0 +1,26 @@
+[package]
+name = "rust-esp32-ulp-blink"
+version = "0.5.1"
+authors = ["ivmarkov"]
+edition = "2018"
+resolver = "2"
+categories = ["embedded", "hardware-support"]
+keywords = ["embedded", "ulp", "esp32s2", "riscv"]
+description = "A demo binary crate for the ESP32-S2 ULP RISCV chip that blinks a LED via a \"mini\"-GPIO HAL and communicates with the main processor"
+repository = "https://github.com/ivmarkov/rust-esp32-ulp-blink"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+
+[profile.release]
+opt-level = "s"
+
+[profile.dev]
+debug = true    # Symbols are nice and they don't increase the size on Flash
+opt-level = "z"
+
+[dependencies]
+panic-halt = "0.2"
+embedded-hal = "0.2"
+esp-idf-hal = { path = "../../esp-idf-hal", features = [
+    "riscv-ulp-hal",
+], default-features = false }

@@ -2,8 +2,6 @@
 #![no_main]
 #![feature(core_intrinsics, start)]
 
-use embedded_hal::blocking::delay::DelayMs;
-use esp_idf_hal::delay;
 use esp_idf_hal::prelude::*;
 use esp_idf_hal::{gpio::*, riscv_ulp_hal::sys::*};
 
@@ -16,9 +14,8 @@ static mut CYCLES: u32 = 40;
 static mut LED_SWITCH: bool = true;
 
 #[no_mangle]
-fn main() {
-    //let mut delay = delay::Ulp;
 
+fn main() {
     unsafe {
         gpio_set_direction(11, gpio_mode_t_GPIO_MODE_OUTPUT_OD);
     }

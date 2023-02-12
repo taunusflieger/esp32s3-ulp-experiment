@@ -18,7 +18,6 @@ const ESP_PD_OPTION_AUTO: u32 = 2;
 const ESP_PD_DOMAIN_RTC_PERIPH: u32 = 0;
 //#[link_section = ".rtc.force_fast"]
 //static mut RUN_TIME: MaybeUninit<Duration> = MaybeUninit::uninit();
-const SLEEP_TIME: Duration = Duration::from_secs(10);
 
 fn main() -> anyhow::Result<()> {
     esp_idf_sys::link_patches();
@@ -70,12 +69,6 @@ fn main() -> anyhow::Result<()> {
             ESP_PD_OPTION_ON
         ))?;
 
-        // std::thread::sleep(core::time::Duration::from_millis(100));
-
-        //esp!(esp_idf_sys::ulp_set_wakeup_period(0, 2000_000))?;
-        //esp_idf_sys::esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_ON);
-        //esp_idf_sys::ulp_riscv_timer_resume();
-        //esp_idf_sys::esp_deep_sleep_start();
         esp!(esp_idf_sys::esp_sleep_enable_ulp_wakeup())?;
         esp_idf_sys::esp_deep_sleep_start();
     }
@@ -91,7 +84,7 @@ fn init_upl_program(ulp: esp_idf_hal::ulp::ULP) -> anyhow::Result<()> {
 
         // suppress boot messages
         esp_idf_sys::esp_deep_sleep_disable_rom_logging();
-        esp!(esp_idf_sys::ulp_set_wakeup_period(0, 500_000))?; // 4_294_967_295
+        esp!(esp_idf_sys::ulp_set_wakeup_period(0, 500_000))?;
 
         ulp_driver.start();
         info!("RiscV ULP started");
